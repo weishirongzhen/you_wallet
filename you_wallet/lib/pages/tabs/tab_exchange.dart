@@ -231,7 +231,7 @@ class Page extends State {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new TokenSelectSheet(
-                    selectArr: Provider.of<Token>(context).items.toList(),
+                    selectArr: Provider.of<Token>(context, listen: false).items.toList(),
                     onCallBackEvent: (res) {
                       setState(() {
                         this.value = res;
@@ -504,7 +504,7 @@ class Page extends State {
 
     // 判断一下有没有还在打包中的订单
     // 如果有订单在打包中，发起交易会失败
-    List list = await Provider.of<Deal>(context).getTraderList();
+    List list = await Provider.of<Deal>(context, listen: false).getTraderList();
     // bool packing = list.any((element) => (element['status'] == "打包中"));
     // if (packing) {
     //   this.showSnackBar('当前有订单在打包中，请先下拉刷新');
@@ -537,7 +537,7 @@ class Page extends State {
     if (res == '0') {
       Navigator.of(context).pop();
       Map currentWallet =
-          Provider.of<walletModel.Wallet>(context).currentWalletObject;
+          Provider.of<walletModel.Wallet>(context, listen: false).currentWalletObject;
       if (currentWallet['balance'] == '0.00') {
         this.showSnackBar('您的钱包ETH余额为0，无法授权，不可以交易');
       } else {
@@ -719,7 +719,7 @@ class Page extends State {
 
   // 下拉刷新底部交易列表
   Future<void> _refresh() async {
-    // if ('mainnet' == Provider.of<Network>(context).network) {
+    // if ('mainnet' == Provider.of<Network>(context, listen: false).network) {
     //   this.showSnackBar('当前网络不支持刷新，请切换测试网');
     //   return;
     // }
@@ -746,7 +746,7 @@ class Page extends State {
   // 计算当前账户余额，这里计算的是右边token的余额
   Future updateTokenBalance() async {
     String balance = await TokenService.getTokenBalance(this.rightToken);
-    await Provider.of<Token>(context)
+    await Provider.of<Token>(context, listen: false)
         .updateTokenBalance(this.rightToken, balance);
     setState(() {
       this.balance = balance + this.rightToken['name'];

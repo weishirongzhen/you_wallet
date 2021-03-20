@@ -44,7 +44,7 @@ class Page extends State<WalletExport> {
   }
 
   void _setWallet(String address) {
-    List arr =  Provider.of<Wallet>(context).items;
+    List arr =  Provider.of<Wallet>(context, listen: false).items;
     arr.forEach((f){
       if (f['address'] == address) {
         setState(() {
@@ -200,12 +200,12 @@ class Page extends State<WalletExport> {
                 // this.showSnackbar('取消');
               },
               onSuccessChooseEvent: () async {
-                 await Provider.of<Wallet>(context).remove(this.wallet);
+                 await Provider.of<Wallet>(context, listen: false).remove(this.wallet);
                 // Navigator.pop(context); //关闭对话框
 
                 // 每次删除钱包后，判断当前还有多少个钱包
                 // 如果钱包没有钱包，则自动跳转新建钱包引导页
-                if (Provider.of<Wallet>(context).items.length == 0) {
+                if (Provider.of<Wallet>(context, listen: false).items.length == 0) {
                   // Navigator.pushReplacementNamed(context, 'wallet_guide');
                   // 销毁当前路由栈，回退到钱包列表页面
                   Navigator.of(context).pushNamedAndRemoveUntil('wallet_guide', (Route<dynamic> route) => false);
@@ -241,7 +241,7 @@ class Page extends State<WalletExport> {
   }
 
   void clickSuccess() async {
-    Provider.of<Wallet>(context).updateName(this.wallet['address'], this._input.text);
+    Provider.of<Wallet>(context, listen: false).updateName(this.wallet['address'], this._input.text);
     Navigator.pop(context);
   }
 

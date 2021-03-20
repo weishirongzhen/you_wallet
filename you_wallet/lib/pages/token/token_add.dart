@@ -280,7 +280,7 @@ class Page extends State<AddToken> {
   }
 
   void saveToken(Map token) async {
-    int id = await Provider.of<Token>(context).add(token);
+    int id = await Provider.of<Token>(context, listen: false).add(token);
     print(id);
     if (id == 0) {
       this.showSnackbar('token已经添加，不可以重复添加');

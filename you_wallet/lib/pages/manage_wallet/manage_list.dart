@@ -93,7 +93,7 @@ class Page extends State<ManageWallet> {
                           value: item['address'],
                           onChanged: (v) {
                             print(v);
-                            Provider.of<Wallet>(context).changeWallet(v);
+                            Provider.of<Wallet>(context, listen: false).changeWallet(v);
                           },
                         );
                       },

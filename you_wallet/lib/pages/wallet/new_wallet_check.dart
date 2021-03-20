@@ -205,7 +205,7 @@ class Page extends State<WalletCheck> {
       'mnemonic': randomMnemonic
     };
 
-    int id = await Provider.of<myWallet.Wallet>(context).add(obj, passWord);
+    int id = await Provider.of<myWallet.Wallet>(context, listen: false).add(obj, passWord);
     if (id > 0) {
       Navigator.of(context).pushReplacementNamed("wallet_success");
     } else {

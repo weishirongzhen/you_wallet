@@ -81,7 +81,7 @@ class _SplashState extends State<Splash>{
   // 前往首页
   // 如果用户在本地还没有钱包，则跳转钱包新建页面
   void go2HomePage() {
-    List wallets = Provider.of<Wallet>(context).items;
+    List wallets = Provider.of<Wallet>(context, listen: false).items;
     if (wallets.length == 0) {
       Navigator.pushReplacementNamed(context, 'wallet_guide');
     } else {

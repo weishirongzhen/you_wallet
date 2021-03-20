@@ -51,7 +51,7 @@ class TransferListState extends State<transferList> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-//    List list = await Provider.of<Deal>(context).getTraderList();
+//    List list = await Provider.of<Deal>(context, listen: false).getTraderList();
 //    setState(() {
 //      this.arr = List.from(list);
 //    });
@@ -228,7 +228,7 @@ class TransferListState extends State<transferList> {
       String res = await Trade.cancelOrder(item, obj);
       print('订单撤销返回 => ${res}');
       eventBus.fire(TransferDoneEvent('撤销中'));
-      await Provider.of<Deal>(context)
+      await Provider.of<Deal>(context, listen: false)
           .updateOrderStatus(item['txnHash'], '撤销中');
       this.tabChange(this.currentTab);
     } catch (e) {
@@ -254,7 +254,7 @@ class TransferListState extends State<transferList> {
               },
               onSuccessChooseEvent: () async {
                 int i =
-                    await Provider.of<Deal>(context).deleteTrader(item['id']);
+                    await Provider.of<Deal>(context, listen: false).deleteTrader(item['id']);
                 // 用bus向兑换页面发出删除成功的通知，兑换页面显示toast
                 if (i == 1) {
                   this
@@ -275,7 +275,7 @@ class TransferListState extends State<transferList> {
   // 注意：这里只是切换数据的显示，并不负责刷新
   void tabChange(String tab) async {
     print('start tabChange ${tab}');
-    List res = await Provider.of<Deal>(context).getTraderList();
+    List res = await Provider.of<Deal>(context, listen: false).getTraderList();
     List list = List.from(res);
     if (tab == '当前兑换') {
       list.retainWhere((element) => (element['status'] == '挂单中' ||
@@ -298,7 +298,7 @@ class TransferListState extends State<transferList> {
   /// 如果订单匹配还在进行中，判断一下这个订单是否还有效（因为它可能被取消了）
   /// 最后通知顶层页面，刷新结束
   Future<void> updateOrderFilled() async {
-    List list = List.from(await Provider.of<Deal>(context).getTraderList());
+    List list = List.from(await Provider.of<Deal>(context, listen: false).getTraderList());
     for (var i = list.length - 1; i >= 0; i--) {
       // print(list[i]);
       if (list[i]['status'] == '进行中' ||
@@ -334,23 +334,23 @@ class TransferListState extends State<transferList> {
     var transactionReceipt = await Trade.getTransactionReceipt(order);
     print('transactionReceipt => ${transactionReceipt}');
     if (transactionReceipt != null && transactionReceipt['status'] == '0x0') {
-      await Provider.of<Deal>(context)
+      await Provider.of<Deal>(context, listen: false)
           .updateOrderStatus(order['txnHash'], '交易失败');
     } else {
-      await Provider.of<Deal>(context)
+      await Provider.of<Deal>(context, listen: false)
           .updateFilled(order, amount.toStringAsFixed(4));
       print(order);
       var res = await Trade.orderFlags(order['odHash']);
       if (order['status'] == '撤销中' && res == '打包中') {
         res = '撤销中';
       }
-      await Provider.of<Deal>(context).updateOrderStatus(order['txnHash'], res);
+      await Provider.of<Deal>(context, listen: false).updateOrderStatus(order['txnHash'], res);
     }
   }
 
   /// 订单匹配状态查询完毕，整体更新一次列表
   // void updateList() async {
-  //   List list = List.from(await Provider.of<Deal>(context).getTraderList());
+  //   List list = List.from(await Provider.of<Deal>(context, listen: false).getTraderList());
   //   list.retainWhere((element) => (element['status'] == '进行中' ||
   //       element['status'] == '挂单中' ||
   //       element['status'] == '打包中'));
@@ -369,7 +369,7 @@ class TransferListState extends State<transferList> {
   /// 拿到订单列表中最新的一个订单状态为打包中的订单，查询订单状态
   void updateOrderStatus() async {
     print('start updateOrderStatus');
-    List list = await Provider.of<Deal>(context).getTraderList();
+    List list = await Provider.of<Deal>(context, listen: false).getTraderList();
     Map order =
         list.lastWhere((e) => e['status'] == '打包中', orElse: () => (null));
     if (order == null) {
@@ -413,10 +413,10 @@ class TransferListState extends State<transferList> {
         Map res = await Trade.getTransactionReceipt({'txnHash': hash});
         if (res['status'] == '0x1') {
           print('轮询结束，下单成功，更改状态为进行中,广播 TransferDoneEvent事件');
-          await Provider.of<Deal>(context).updateOrderStatus(hash, '进行中');
+          await Provider.of<Deal>(context, listen: false).updateOrderStatus(hash, '进行中');
           eventBus.fire(TransferDoneEvent('打包成功，订单状态变更为进行中'));
         } else {
-          await Provider.of<Deal>(context).updateOrderStatus(hash, '失败');
+          await Provider.of<Deal>(context, listen: false).updateOrderStatus(hash, '失败');
           eventBus.fire(TransferDoneEvent('挂单失败'));
         }
         eventBus.fire(TransferUpdateStartEvent());

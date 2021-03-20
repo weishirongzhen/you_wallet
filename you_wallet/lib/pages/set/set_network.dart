@@ -51,8 +51,8 @@ class _NetworkPageState extends State<NetworkPage> {
   }
 
   void setNetWork(name) async{
-    await Provider.of<Network>(context).changeNetwork(name);
-    await Provider.of<Token>(context).refreshTokenList();
+    await Provider.of<Network>(context, listen: false).changeNetwork(name);
+    await Provider.of<Token>(context, listen: false).refreshTokenList();
   }
 
 }

@@ -58,7 +58,7 @@ class Page extends State<TokenSelectSheet> {
   /// 弹出底部的选择列表
   /// 转账模式下，要把ETH加进去
   selectToken(context) async {
-    Map wallet = Provider.of<walletModel.Wallet>(context).currentWalletObject;
+    Map wallet = Provider.of<walletModel.Wallet>(context, listen: false).currentWalletObject;
 
     List tokens = [
       {
@@ -70,7 +70,7 @@ class Page extends State<TokenSelectSheet> {
       },
       ...widget.selectArr,
     ];
-    // List tokens = Provider.of<Token>(context)
+    // List tokens = Provider.of<Token>(context, listen: false)
     //     .items
     //     .where((e) => (e['wallet'] == wallet))
     //     .toList();

@@ -54,14 +54,14 @@ class Page extends State<TabReceive> {
               child: new Column(
                 children: <Widget>[
                   new Text(
-                      Provider.of<Wallet>(context)
+                      Provider.of<Wallet>(context, listen: false)
                               .currentWalletObject['name'] ??
                           '-',
                       style:
                           new TextStyle(fontSize: 24.0, color: Colors.white)),
                   new Text(
                       TokenService.maskAddress(
-                          Provider.of<Wallet>(context).currentWallet),
+                          Provider.of<Wallet>(context, listen: false).currentWallet),
                       style:
                           new TextStyle(fontSize: 18.0, color: Colors.white)),
                   new Container(
@@ -100,7 +100,7 @@ class Page extends State<TabReceive> {
                             ),
                           ),
                           QrImage(
-                            data: Provider.of<Wallet>(context).currentWallet +
+                            data: Provider.of<Wallet>(context, listen: false).currentWallet +
                                 ':transfer',
                             size: 100.0,
                           ),
@@ -146,7 +146,7 @@ class Page extends State<TabReceive> {
 
   void _copyAddress() {
     ClipboardData data =
-        new ClipboardData(text: Provider.of<Wallet>(context).currentWallet);
+        new ClipboardData(text: Provider.of<Wallet>(context, listen: false).currentWallet);
     Clipboard.setData(data);
     final snackBar = new SnackBar(content: new Text('复制成功'));
     Scaffold.of(context).showSnackBar(snackBar);

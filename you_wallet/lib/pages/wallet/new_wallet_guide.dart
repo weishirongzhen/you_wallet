@@ -24,7 +24,7 @@ class _WalletGuideState extends State<WalletGuide> {
     return Scaffold(
         key: globalKey,
         appBar: AppBar(
-          elevation: Provider.of<Wallet>(context).items.length > 0 ? 3:0,
+          elevation: Provider.of<Wallet>(context, listen: false).items.length > 0 ? 3:0,
           title: Text(""),
         ),
         body: Center(

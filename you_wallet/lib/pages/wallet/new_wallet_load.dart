@@ -45,7 +45,7 @@ class Page extends State<LoadWallet> {
     if (this.arguments == null) {
       print("没有参数");
     } else {
-      String key = Provider.of<myWallet.Wallet>(context)
+      String key = Provider.of<myWallet.Wallet>(context,listen: false)
           .exportPrivateKey(this.arguments['address']);
       print('查询到的key=》${key}');
       setState(() {
@@ -295,7 +295,7 @@ class Page extends State<LoadWallet> {
 
     int id;
     try {
-      id = await Provider.of<myWallet.Wallet>(context).add(item, pwd);
+      id = await Provider.of<myWallet.Wallet>(context, listen: false).add(item, pwd);
     } catch (e) {
       print(e);
       Navigator.pop(context);

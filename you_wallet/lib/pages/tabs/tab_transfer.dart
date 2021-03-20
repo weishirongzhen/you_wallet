@@ -95,7 +95,7 @@ class Page extends State<TabTransfer> {
                   width: 100.0,
                   child: new TokenSelectSheet(
                       selectType: 'transfer',
-                      selectArr: Provider.of<Token>(context).items.toList(),
+                      selectArr: Provider.of<Token>(context, listen: false).items.toList(),
                       onCallBackEvent: (res) {
                         print(res);
                         setState(() {
@@ -244,7 +244,7 @@ class Page extends State<TabTransfer> {
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(Provider.of<Book>(context).items.length > 0
+                    Text(Provider.of<Book>(context, listen: false).items.length > 0
                         ? '历史联系人'
                         : ''),
                     Consumer<Book>(
@@ -360,7 +360,7 @@ class Page extends State<TabTransfer> {
       print('start');
       String balance = await TokenService.getTokenBalance(this.token);
       print('balance => ${balance}');
-      await Provider.of<Token>(context).updateTokenBalance(this.token, balance);
+      await Provider.of<Token>(context, listen: false).updateTokenBalance(this.token, balance);
       setState(() {
         this.balance = balance;
       });
@@ -370,7 +370,7 @@ class Page extends State<TabTransfer> {
   // 更新联系人
 //  Future<void> _getBookList() async {
 //      print('_getBookList');
-//      List res = await Provider.of<Book>(context).getBookList();
+//      List res = await Provider.of<Book>(context, listen: false).getBookList();
 //      print(res);
 ////      setState(() {
 ////        this.balance =  balance;
@@ -398,7 +398,7 @@ class Page extends State<TabTransfer> {
     print('star');
     print(controllerPrice.text);
     print(this.token);
-    String from = Provider.of<Wallet>(context).currentWallet;
+    String from = Provider.of<Wallet>(context, listen: false).currentWallet;
     String to = controllerAddress.text;
     String num = controllerPrice.text;
     // obj里面包括私钥，gaslimit，gasprice
@@ -413,7 +413,7 @@ class Page extends State<TabTransfer> {
         // 保存转账记录
         this.saveTransfer(from, to, num, txnHash, this.token);
         // 保存转账人到常用联系人表
-        await Provider.of<Book>(context).saveBookAddress([to, '']);
+        await Provider.of<Book>(context, listen: false).saveBookAddress([to, '']);
         // 拿到hash值，根据hash值查询以太坊打包是否成功
         this.checkOrderStatus(txnHash, 0);
       } catch (e) {
@@ -494,7 +494,7 @@ class Page extends State<TabTransfer> {
   // 编辑联系人的回调函数
   editRemarkCallback(Map item) async {
     print(item);
-    await Provider.of<Book>(context).updateBookReamrk(
+    await Provider.of<Book>(context, listen: false).updateBookReamrk(
         {'remark': this._addressRemarkInput.text, 'address': item['address']});
     Navigator.pop(context);
   }

@@ -46,12 +46,12 @@ class Page extends State<TabWallet> {
 
     //监听token列表刷新事件
     eventBus.on<TokenListUpdateEvent>().listen((event) async {
-      String address = Provider.of<walletModel.Wallet>(context)
+      String address = Provider.of<walletModel.Wallet>(context, listen: false)
           .currentWalletObject['address'];
       // 更新钱包的ETH余额
-      Provider.of<walletModel.Wallet>(context).updateWallet(address);
+      Provider.of<walletModel.Wallet>(context, listen: false).updateWallet(address);
       // 更新钱包里面多个token的余额
-      Provider.of<Token>(context).updateBalance(address);
+      Provider.of<Token>(context, listen: false).updateBalance(address);
     });
 
     //监听版本检查
@@ -78,9 +78,9 @@ class Page extends State<TabWallet> {
     print('start deactivate');
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
-      String address = Provider.of<walletModel.Wallet>(context)
+      String address = Provider.of<walletModel.Wallet>(context, listen: false)
           .currentWalletObject['address'];
-      await Provider.of<walletModel.Wallet>(context).updateWallet(address);
+      await Provider.of<walletModel.Wallet>(context, listen: false).updateWallet(address);
     }
   }
 
@@ -108,9 +108,9 @@ class Page extends State<TabWallet> {
                   builder: (context, Token, child) {
                     return tokenList(
                         arr: Token.items,
-                        network: Provider.of<Network>(context).network,
+                        network: Provider.of<Network>(context, listen: false).network,
                         currentWalletObject:
-                            Provider.of<walletModel.Wallet>(context)
+                            Provider.of<walletModel.Wallet>(context, listen: false)
                                 .currentWalletObject);
                   },
                 ),
@@ -323,11 +323,11 @@ class Page extends State<TabWallet> {
           );
         });
     String address =
-        Provider.of<walletModel.Wallet>(context).currentWalletObject['address'];
+        Provider.of<walletModel.Wallet>(context, listen: false).currentWalletObject['address'];
     // 更新钱包的ETH余额
-    await Provider.of<walletModel.Wallet>(context).updateWallet(address);
+    await Provider.of<walletModel.Wallet>(context, listen: false).updateWallet(address);
     // 更新钱包里面多个token的余额
-    await Provider.of<Token>(context).updateBalance(address);
+    await Provider.of<Token>(context, listen: false).updateBalance(address);
     final snackBar = new SnackBar(content: new Text('刷新结束'));
     Scaffold.of(context).showSnackBar(snackBar);
     Navigator.pop(context);

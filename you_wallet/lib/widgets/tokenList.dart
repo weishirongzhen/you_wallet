@@ -70,7 +70,7 @@ class tokenList extends StatelessWidget {
           // color: Color(0xfff56c6c),
           icon: Icons.delete,
           onTap: () async {
-            await Provider.of<Token>(context).remove(item);
+            await Provider.of<Token>(context, listen: false).remove(item);
           },
         )
       ],

@@ -107,7 +107,7 @@ class Page extends State<TradesDeep> {
   /// 如果有一边的token还没有选择，则不更新
   /// 兑换页面的深度交易列表，最多只能显示6个订单
   Future<void> getOrderDeep() async {
-    if ('mainnet' == Provider.of<Network>(context).network) {
+    if ('mainnet' == Provider.of<Network>(context, listen: false).network) {
       Global.showSnackBar(context, '当前网络不支持，请切换测试网');
       return;
     }

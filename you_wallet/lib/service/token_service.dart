@@ -135,7 +135,7 @@ class TokenService {
    * */
   static Future<String> allowance(context, String token) async {
     String myAddress =
-        Provider.of<walletModel.Wallet>(context).currentWalletObject['address'];
+        Provider.of<walletModel.Wallet>(context, listen: false).currentWalletObject['address'];
     String postData = Global.funcHashes['allowance'] +
         myAddress.replaceFirst('0x', '').padLeft(64, '0') +
         Global.proxy.replaceFirst('0x', '').padLeft(64, '0');

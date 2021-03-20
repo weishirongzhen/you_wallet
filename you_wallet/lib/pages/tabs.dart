@@ -115,7 +115,7 @@ class _ContainerPageState extends State<TabsPage> {
 
   @override
   Widget build(BuildContext context) {
-//    List wallets = Provider.of<Wallet>(context).items;
+//    List wallets = Provider.of<Wallet>(context, listen: false).items;
 //    if (wallets.length == 0) {
 //      Navigator.pushNamed(context, "wallet_guide");
 //    }

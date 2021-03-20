@@ -22,7 +22,7 @@ class TokenSelect extends StatelessWidget {
 // 构建下拉列表
 List<DropdownMenuItem> getListData(context){
   List<DropdownMenuItem> items=new List();
-  List tokens = Provider.of<Token>(context).items;
+  List tokens = Provider.of<Token>(context, listen: false).items;
   for (var value in tokens) {
     items.add(new DropdownMenuItem(
       child:new Text(value['name']),
@@ -48,7 +48,7 @@ Widget walletCard(item, context) {
       key: new Key(item['id'].toString()),
       onDismissed: (direction) {
         // 更新token model中的token数组
-        Provider.of<Token>(context).remove(item);
+        Provider.of<Token>(context, listen: false).remove(item);
         final snackBar =  SnackBar(content: new Text("移除成功"));
         Scaffold.of(context).showSnackBar(snackBar);
       },
